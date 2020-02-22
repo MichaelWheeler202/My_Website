@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<main role="main" class="container">
+      <div class="row">
+            <div class="col-md-8">
+
+                <h4>Contact Info</h4>
+                <a> Email: Mikewheeler202@gmail.com </a>
+                <br/>
+                <a> Cell Phone: (269) 271-1809 </a>
+                <br/>
+                <a href="https://github.com/MichaelWheeler202"> Github: https://github.com/MichaelWheeler202 </a>
+                <br/>
+                <a href="https://www.kaggle.com/mjwheele"> Kaggle: https://www.kaggle.com/mjwheele </a>
+                <br/> <br/> <br/>
+
+                <h4>Resume</h4>
+                <a href="{% static 'app_pages/Resume.pdf' %}" download="Resume.pdf"> Resume.pdf </a>
+
+            </div>
+       </div>
+</main>
+
+{% endblock content %}

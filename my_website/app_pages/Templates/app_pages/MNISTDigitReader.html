@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+
+                <!-- Imports -->
+                <script src="{% static 'app_pages/jquery-3.4.1.js' %}"></script>
+                <script src="{% static 'app_pages/MNIST_Digit_Reader.js' %}"></script>
+
+                <h3>Demo</h3>
+                <h5>Instructions</h5>
+                <a>
+                    To draw on the grid just click on a square and drag your mouse around.  You can erase by clicking on an already filled square
+                    and dragging the mouse.  If you'd like to erase the whole board just click the "Clear Drawing" button.
+                    When your drawing is complete click the "Guess Number" button and a neural network written with tensorflow
+                    will try to read your number.  It is helpful to draw slowly as drawing quickly may skip over squares.
+                </a>
+
+                <br/><br/>
+
+                <!-- buttons and number display -->
+                <div  class="button-container"  id="grid-control-and-output" >
+
+                    <!-- Display forms inline -->
+                    <style>
+                          form { display:inline-block; }
+                          /* IE6-7 */
+                          @media,
+                              {
+                              div { display: inline; margin-right:10px; }
+                              }
+                   </style>
+
+                    <form id="ClearDrawing">
+                        <div>
+                            <input type="submit" value="Clear Drawing">
+                        </div>
+                    </form>
+
+                     <form>
+                        <div>
+                            <span> </span>
+                        </div>
+                    </form>
+
+                    <form id="JudgeDrawing">
+                        {% csrf_token %}
+                        <div>
+                            <input type="submit" value="Read Number">
+                        </div>
+                    </form>
+                </div>
+
+                <br/>
+
+                <h5 id = "your_number">  Your number is: </h5>
+
+                <!-- grid -->
+                <div>
+                    <table id="pixel_canvas">
+                        <style>
+                            table,
+                                tr,
+                                td {
+                                    border: black 0.2px solid ;
+                                }
+
+
+
+                                tr {
+                                    height: 10px;
+                                }
+
+                                td {
+                                    width: 10px;
+                                }
+                        </style>
+                    </table>
+                </div>
+
+        </div>
+     </div>
+</main>
+
+{% endblock content %}
