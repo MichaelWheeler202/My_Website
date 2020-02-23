@@ -31,12 +31,8 @@ def ReadNumber(request):
             table_list[row][col] = post[table_index]
 
     table_list = table_list.reshape(1, 28, 28, 1)
-
     predictions = list(digit_reader.predict(table_list)[0])
-
-    print(predictions)
     predicted_number = predictions.index(max(predictions))
-    print(predicted_number)
 
     return HttpResponse(predicted_number)
 
