@@ -16,7 +16,7 @@
                     To draw on the grid just click on a square and drag your mouse around.  You can erase by clicking on an already filled square
                     and dragging the mouse.  If you'd like to erase the whole board just click the "Clear Drawing" button.
                     When your drawing is complete click the "Guess Number" button and a neural network written with tensorflow
-                    will try to read your number.  It is helpful to draw slowly as drawing quickly may skip over squares.
+                    will try to read your number.  It is helpful to draw slowly as drawing quickly may skip over squares. testtestetstsetstes....
                 </a>
 
                 <br/><br/>
@@ -80,6 +80,16 @@
                         </style>
                     </table>
                 </div>
+
+            <h3>How it works</h3>
+            <a>
+                On the client side there is a html grid.  Javascript event listeners listen for the user clicking and
+                moving their mouse on the grid to let the user draw.  When the user clicks the "Guess Number" button
+                a javascript function parses the grid to make a JSON object containing which squares are filled and
+                which ones are not.  This object is then sent to a function on the Django server through an ajax
+                request.  This function uses a convolutional neural network model that was built and trained
+                in another project to guess which number the user drew and the result is returned to the client.
+            </a>
 
         </div>
      </div>
