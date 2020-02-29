@@ -11,21 +11,39 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from xml.dom import minidom
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = None
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = None
+
+if os.path.isfile(BASE_DIR + '/config.xml'):
+
+    xml_doc = minidom.parse(BASE_DIR + '/config.xml')
+
+    item_list = xml_doc.getElementsByTagName('item')
+
+    for s in item_list:
+        if s.attributes['key'].value == 'secret':
+            SECRET_KEY = s.attributes['value'].value
+
+        elif s.attributes['key'].value == 'debug':
+            DEBUG = s.attributes['value'].value
+
+else:
+    print("config.xml does not exist in")
+    exit(-1)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
