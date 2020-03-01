@@ -7,9 +7,11 @@ from django.views.decorators.cache import cache_page
 import os
 import json
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
 
-digit_reader = tf.keras.models.load_model('./../MNIST-Reader.h5')
+from tensorflow import keras
+
+digit_reader = keras.models.load_model('./../MNIST-Reader.h5')
 
 def home(request):
     return render(request, 'app_pages/home.html')
