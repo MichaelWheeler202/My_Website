@@ -2,8 +2,8 @@
 var isDrawing = false;
 var color = 'rgb(0, 0, 0)';
 
-var row_input = 28 // width
-var col_input = 28 // height
+var row_input = 24; // width
+var col_input = 24; // height
 
 $(document).ready(function () {
 
@@ -15,34 +15,34 @@ $(document).ready(function () {
 
 	// init
 	// --------------------------------------------------------------------------------------------------------
-	
+
 	//build the grid
-	for (var i = 1; i <= row_input; i++) { 
+	for (var i = 1; i <= row_input; i++) {
 	  $('table').append("<tr></tr>"); // This loop creates a row of cells
-	  
+
 	  for (var j = 1; j <= col_input; j++) {
 		$('tr:last').append("<td></td>"); // This loop adds a cell after every row
-		$('td').attr("class", 'cells') // For every 'td', a class of 'cells' is created
+		$('td').attr("class", 'cells'); // For every 'td', a class of 'cells' is created
 	  }
-	  
+
 	}
 
     //reset grid to white
      resetGrid();
 
-	// --------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------
 
 
 	// listeners
-	// --------------------------------------------------------------------------------------------------------		
+	// --------------------------------------------------------------------------------------------------------
 	document.addEventListener('mousedown', onMouseDown, false );
 
 	function onMouseDown(grid) {
-		
+
 		grid.preventDefault(); //prevents browser to follow links or move images
-	
+
 		isDrawing = true;
-		
+
 		current_color = $(event.target).css('background-color');
 
         var target_name = $(event.target)[0].getAttribute('class');
@@ -61,11 +61,11 @@ $(document).ready(function () {
             var tbl = $('table tr');
 
             if (typeof x == 'undefined'){
-                x = 0
+                x = 0;
             }
 
             if (typeof y == 'undefined'){
-                y = 0
+                y = 0;
             }
 
             $(tbl[y].childNodes[x]).css('background-color', color);
@@ -92,15 +92,15 @@ $(document).ready(function () {
 	document.addEventListener( 'mouseup', onMouseUp, false );
 
 	function onMouseUp(grid) {
-		
+
 		grid.preventDefault(); //prevents browser to follow links or move images
 		isDrawing = false;
-		
+
 	}
 
 
 	$('.cells').mousemove(function (event) { // The function allows the user to color a cell on click
-		
+
 		if (isDrawing == true) {
 			$(event.target).css('background-color', color); // Lets the chosen color on a click event to be added to the grid
 
@@ -108,11 +108,11 @@ $(document).ready(function () {
             var y = $(event.target.parentNode.rowIndex)[0];
 
             if (typeof x == 'undefined'){
-                x = 0
+                x = 0;
             }
 
             if (typeof y == 'undefined'){
-                y = 0
+                y = 0;
             }
 
             var tbl = $('table tr');
@@ -138,12 +138,12 @@ $(document).ready(function () {
 		}
 
 	});
-	// --------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------
 
 	$('#ClearDrawing').submit(function makeGrid(grid) {  // Creates the grid upon clicking the button 'Submit'
-    
+
 		// prevent refresh on form submit
-		grid.preventDefault();  
+		grid.preventDefault();
 
         //reset grid to white
         resetGrid();
@@ -162,14 +162,32 @@ $(document).ready(function () {
         var tbl = $('table tr');
 		var row;
 		var cell;
-		var jObject = {}
+		var jObject = {};
 
-		for (var i = 0; i < row_input; i++){
-			row = $(tbl[i].childNodes);
-			for (var j = 0; j < col_input; j++){
-				cell = $(row[j]);
+        var row_index = 0;
+        var col_index = 0;
+
+        //create grid of 28*28 size regardless of html table size
+		for (var i = 0; i < 28; i++){
+		    row_index = i - (28-row_input)/2;
+		    if (row_index < 0 || row_index > (row_input - 1)){
+		        row = null;
+		    }else{
+        	    row = $(tbl[row_index].childNodes);
+		    }
+			for (var j = 0; j < 28; j++){
+			    col_index = j - (28-col_input)/2;
+			    if (row == null || col_index < 0 || col_index > (col_input - 1) ){
+                    cell = null;
+			    } else {
+                	cell = $(row[col_index]);
+			    }
+
 				//black (1) or white (0)
-				if (cell.css('background-color') == 'rgb(0, 0, 0)'){
+				if (cell == null){
+				    jObject['row_' + i + '_col_' + j] = 0;
+				}
+				else if (cell.css('background-color') == 'rgb(0, 0, 0)'){
 				    jObject['row_' + i + '_col_' + j] = 1;
 				} else {
 				    jObject['row_' + i + '_col_' + j] = 0;
@@ -192,8 +210,6 @@ $(document).ready(function () {
 	                    your_number_label.innerHTML = "Your number is: " + your_number.toString();
                     }
         });
-
-
 
 	});
 
