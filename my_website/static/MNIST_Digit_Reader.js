@@ -49,12 +49,6 @@ $(document).ready(function () {
 
         if (target_name == 'cells'){
 
-            if (current_color == 'rgb(0, 0, 0)'){
-                color = 'rgb(255, 255, 255)';
-            } else {
-                color = 'rgb(0, 0, 0)';
-            }
-
             var x = $(event.target.cellIndex)[0];
             var y = $(event.target.parentNode.rowIndex)[0];
 
@@ -178,12 +172,16 @@ $(document).ready(function () {
 			for (var j = 0; j < 28; j++){
 			    col_index = j - (28-col_input)/2;
 			    if (row == null || col_index < 0 || col_index > (col_input - 1) ){
-                    cell = 0;
+                    cell = null;
 			    } else {
                 	cell = $(row[col_index]);
 			    }
+
 				//black (1) or white (0)
-				if (cell.css('background-color') == 'rgb(0, 0, 0)'){
+				if (cell == null){
+				    jObject['row_' + i + '_col_' + j] = 0;
+				}
+				else if (cell.css('background-color') == 'rgb(0, 0, 0)'){
 				    jObject['row_' + i + '_col_' + j] = 1;
 				} else {
 				    jObject['row_' + i + '_col_' + j] = 0;

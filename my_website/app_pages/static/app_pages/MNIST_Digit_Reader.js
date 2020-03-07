@@ -49,12 +49,6 @@ $(document).ready(function () {
 
         if (target_name == 'cells'){
 
-            if (current_color == 'rgb(0, 0, 0)'){
-                color = 'rgb(255, 255, 255)';
-            } else {
-                color = 'rgb(0, 0, 0)';
-            }
-
             var x = $(event.target.cellIndex)[0];
             var y = $(event.target.parentNode.rowIndex)[0];
 
