@@ -86,14 +86,15 @@ $(document).ready(function () {
 	document.addEventListener( 'mouseup', onMouseUp, false );
 
 	function onMouseUp(grid) {
-
 		grid.preventDefault(); //prevents browser to follow links or move images
 		isDrawing = false;
 
 	}
 
+    document.getElementById("pixel_canvas").addEventListener( 'mousemove', onMove, false );
+    document.getElementById("pixel_canvas").addEventListener( 'touchemove', onMove, false );
 
-	$('.cells').mousemove(function (event) { // The function allows the user to color a cell on click
+	function onMove(grid) {
 
 		if (isDrawing == true) {
 			$(event.target).css('background-color', color); // Lets the chosen color on a click event to be added to the grid
@@ -101,19 +102,15 @@ $(document).ready(function () {
             var x = $(event.target.cellIndex)[0];
             var y = $(event.target.parentNode.rowIndex)[0];
 
-            if (typeof x == 'undefined'){
-                x = 0;
-            }
-
-            if (typeof y == 'undefined'){
-                y = 0;
+            if (typeof x == 'undefined' || typeof y == 'undefined'){
+               return
             }
 
             var tbl = $('table tr');
 
             $(tbl[y].childNodes[x]).css('background-color', color);
 
-            if (x < col_input - 1) {
+            if (x < row_input - 1) {
                 $(tbl[y].childNodes[x+1]).css('background-color', color);
             }
 
@@ -121,7 +118,7 @@ $(document).ready(function () {
                 $(tbl[y].childNodes[x-1]).css('background-color', color);
             }
 
-            if (y < row_input - 1) {
+            if (y < col_input - 1) {
                 $(tbl[y+1].childNodes[x]).css('background-color', color);
             }
 
@@ -131,7 +128,8 @@ $(document).ready(function () {
 
 		}
 
-	});
+        return
+	}
 	// --------------------------------------------------------------------------------------------------------
 
 	$('#ClearDrawing').submit(function makeGrid(grid) {  // Creates the grid upon clicking the button 'Submit'
