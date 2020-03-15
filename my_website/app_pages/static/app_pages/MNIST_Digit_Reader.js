@@ -30,17 +30,17 @@ $(document).ready(function () {
     //reset grid to white
      resetGrid();
 
+
 	// --------------------------------------------------------------------------------------------------------
 
 
 	// listeners
 	// --------------------------------------------------------------------------------------------------------
-	document.addEventListener('mousedown', onMouseDown, false );
+	document.getElementById("pixel_canvas").addEventListener('mousedown', onMouseDown, false );
+	document.getElementById("pixel_canvas").addEventListener('touchstart', onMouseDown, false );
 
 	function onMouseDown(grid) {
-
-		grid.preventDefault(); //prevents browser to follow links or move images
-
+		
 		isDrawing = true;
 
 		current_color = $(event.target).css('background-color');
@@ -84,23 +84,36 @@ $(document).ready(function () {
 
 
 	document.addEventListener( 'mouseup', onMouseUp, false );
+	document.addEventListener( 'touchend', onMouseUp, false );
 
 	function onMouseUp(grid) {
-		grid.preventDefault(); //prevents browser to follow links or move images
 		isDrawing = false;
 
 	}
 
-    document.getElementById("pixel_canvas").addEventListener( 'mousemove', onMove, false );
-    document.getElementById("pixel_canvas").addEventListener( 'touchemove', onMove, false );
+  	document.getElementById("pixel_canvas").addEventListener( 'mousemove', onMove, false );
+   	document.getElementById("pixel_canvas").addEventListener( 'touchmove', onMove, false );
 
 	function onMove(grid) {
 
-		if (isDrawing == true) {
-			$(event.target).css('background-color', color); // Lets the chosen color on a click event to be added to the grid
+		grid.preventDefault();
 
-            var x = $(event.target.cellIndex)[0];
-            var y = $(event.target.parentNode.rowIndex)[0];
+		if (isDrawing == true) {
+
+			var event_target = event.target
+
+
+			if (event.type == "touchmove"){
+       		
+				var event_target = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+
+			}
+
+			$(event.target).css('background-color', color); // Lets the chosen color on a click event to be added to the grid
+			
+			var x = $(event_target.cellIndex)[0];
+            var y = $(event_target.parentNode.rowIndex)[0];
+
 
             if (typeof x == 'undefined' || typeof y == 'undefined'){
                return
@@ -130,6 +143,9 @@ $(document).ready(function () {
 
         return
 	}
+
+
+
 	// --------------------------------------------------------------------------------------------------------
 
 	$('#ClearDrawing').submit(function makeGrid(grid) {  // Creates the grid upon clicking the button 'Submit'
