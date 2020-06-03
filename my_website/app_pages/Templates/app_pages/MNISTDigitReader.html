@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
+ <!-- Imports -->
+<script src="{% static 'app_pages/jquery-3.4.1.js' %}"></script>
+<script src="{% static 'app_pages/MNIST_Digit_Reader.js' %}"></script>
 <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-
-                <!-- Imports -->
-                <script src="{% static 'app_pages/jquery-3.4.1.js' %}"></script>
-                <script src="{% static 'app_pages/MNIST_Digit_Reader.js' %}"></script>
 
                 <h3>Demo</h3>
                 <h5>Instructions</h5>
                 <a>
                     Try drawing a number between 0 and 9.  To draw on the grid, just click on a square and drag your mouse around.
                     If you'd like to erase the board, just click the "Clear Drawing" button. When your drawing is complete, click
-                    the "Guess Number" button and a neural network written with tensorflow will try to read your number. 
+                    the "Read Number" button and a neural network written with tensorflow will try to read your number.
                 </a>
 
                 <br/><br/>
