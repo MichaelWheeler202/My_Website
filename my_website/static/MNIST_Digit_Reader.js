@@ -7,11 +7,6 @@ var col_input = 24; // height
 
 $(document).ready(function () {
 
-	// suppress select events
-    $(window).bind('selectstart', function(event) {
-        event.preventDefault();
-    });
-
 
 	// init
 	// --------------------------------------------------------------------------------------------------------
