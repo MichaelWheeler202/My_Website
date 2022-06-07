@@ -95,12 +95,14 @@ WSGI_APPLICATION = 'my_website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ec2-user',
-    }
-}
+DATABASES = {}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ec2-user',
+#     }
+# }
 
 
 # Password validation
