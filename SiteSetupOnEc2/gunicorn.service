@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=script-runner
+Group=script-runner
+WorkingDirectory=/home/script-runner/My_Website/my_website
+ExecStart=/home/script-runner/venv/bin/gunicorn -b unix:/run/gunicorn.sock my_website.wsgi
+Type=simple
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

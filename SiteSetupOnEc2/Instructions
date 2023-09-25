@@ -1,0 +1,74 @@
+ssh -i "<PEM_FILE>" ec2-user@<IP_ADDRESS>
+
+New Instance Setup
+________________________
+sudo adduser script-runner
+sudo passwd script-runner
+usermod -aG wheel script-runner
+
+# install these
+sudo yum install git
+sudo yum install tmux
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+sudo yum install nginx
+
+# download site
+git clone https://github.com/MichaelWheeler202/My_Website.git
+
+# Create venv
+python3 -m venv  ./venv
+
+source ./venv/bin/activate
+
+# In My_website find the requirements.txt
+pip install -r requirements.txt --no-cache-dir
+sudo systemctl start gunicorn.socket
+sudo systemctl enable gunicorn.socket
+
+# change ip on route 53
+
+
+# install sqllite db
+sudo yum install sqlite-devel
+sudo sqlite3 script-runner-db.db
+#In settings.py set it to use sqlite3 and the db to script-runner-db.db
+sudo chown script-runner script-runner-db.db
+
+sudo /home/script-runner/venv/bin/python /home/script-runner/My_Website/my_website/manage.py
+# IF AN ERROR OSError: No file or directory found at ./../MNIST-Reader.h5 IS THROWN IT IS RELATIVE TO WHERE I'M RUNNING THE COMMAND. TODO: FIX
+sudo /home/script-runner/venv/bin/python /home/script-runner/My_Website/my_website/manage.py migrate
+sudo /home/script-runner/venv/bin/python /home/script-runner/My_Website/my_website/manage.py collectstatic
+
+# configure nginx& configure gunicorn
+# https://dev.to/rmiyazaki6499/deploying-a-production-ready-django-app-on-aws-1pk3#installing-dependencies
+# https://www.youtube.com/watch?v=7O1H9kr1CsA
+sudo vim /etc/systemd/system/gunicorn.socket
+sudo vim /etc/systemd/system/gunicorn.service
+sudo vim /etc/nginx/sites-available/my_website.conf
+sudo ln -s /etc/nginx/sites-available/my_website.conf /etc/nginx/sites-enabled
+
+Setup Instance: Debugging
+________________________
+sudo systemctl restart gunicorn
+sudo service nginx restart
+source ./venv/bin/activate
+cd /home/ec2-user/My_Website/my_webiste
+gunicorn -b 0.0.0.0:8000 my_website.wsgi
+
+# Debugging from gunicorn instance
+journalctl --unit=gunicorn | tail -n 50
+
+
+
+RESTARTING GUNICORN & NGINX
+________________________
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
+sudo systemctl status gunicorn
+sudo service nginx restart
+
+
+
+RUNNING SCRIPTS ON STARTUP
+https://saturncloud.io/blog/running-scripts-at-startup-on-aws-ec2-instances-a-comprehensive-guide/
